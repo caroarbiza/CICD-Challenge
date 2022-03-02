@@ -1,4 +1,6 @@
 
+
+
 node {
     stage('Build') {
         checkout scm
@@ -15,8 +17,8 @@ node {
 node {
     stage('Deploy') {
         echo 'deploying the application'
-        sshagent(credentials: ['SSH-APP']) {
-            sh "ssh -o StrictHostKeyChecking=no -l vagrant 192.168.108.210 'sudo docker run -dp 80:3030 caroarbiza/cicd-challenge:latest'"
+        withCredentials([string(credentialsId: 'ssh', variable: 'SECRET')]) {
+            sh "sshpass -p $SECRET ssh vagrant@192.168.108.210 'sudo docker run -dp 80:3030 caroarbiza/cicd-challenge:latest'"
 
         }
     }
