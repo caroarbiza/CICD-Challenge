@@ -1,0 +1,10 @@
+node {
+    stage('Build') {
+        checkout scm
+        def customImage = docker.build("caroarbiza/cicd-challenge:latest")
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+        customImage.push("latest")
+        }
+
+    }
+}
